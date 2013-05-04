@@ -1,0 +1,26 @@
+require "middleclass.lua"
+require "LUBE.lua"
+
+function connCallback(ip, port) --when a client connects
+    --do something
+end
+
+function rcvCallback(data, ip, port) --same as in client, but also receives ip and port of sender
+end
+
+function disconnCallback(ip, port) --when a client disconnects
+end
+
+function love.load()
+    --anything
+    lube.server.Init(port) --again, change port
+    lube.server.setCallback(rcvCallback, connCallback, disconnCallback) --set the callbacks
+    lube.server.setHandshake("Hi!") --should be the same as the client
+end
+
+function love.update(dt)
+    lube.server.update() --same story as client
+end
+
+function love.draw()
+end

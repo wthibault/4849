@@ -1,0 +1,14 @@
+-- test the bsp module
+bsp=require('bsp')
+vector=require('vector')
+
+function makeRandomPoints ( n )
+   n = n or 1000
+
+   pts = {}
+   for i=1,n do
+      table.append(pts, vector.new(math.random(0,100),math.random(0,100)))
+   end
+   return pts
+end
+

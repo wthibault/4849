@@ -1,0 +1,11 @@
+
+--This line, and those below, will be ignored--
+
+A    shootingdots
+A    shootingdots/vector.lua
+A    shootingdots/main.lua
+A    shootingdots/middleclass.lua
+A    shootingdots/stateful.lua
+AM   shootingdots/bing.wav
+AM   shootingdots/upsy.wav
+M    sshooter/main.lua

@@ -1,0 +1,7 @@
+function outside ()
+   print ("You are standing outside a house. You need to find a bathroom.")
+   local move = io.read()
+   if move == 'east' then return entry()
+   else
+      print ('Stragely, you cannot move that way.')
+      return outside()
