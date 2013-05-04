@@ -3,7 +3,7 @@ require 'middleclass'
 Stateful = require "stateful"
 bsp = require "bsp"
 
-numNPCs = 100
+numNPCs = 500
 
 
 -- This example shows using 'middleclass' objects and 'stateful.lua' to 
@@ -26,6 +26,9 @@ function Game:initialize()
    self.npcTree = nil
    self.bulletRadius = 16
    self.npcRadius = 50
+   self.npcTimeSpentMoving = 13
+   self.npcTimeSpentStopped = 3
+   self.npcTimeSpentStoppedJitter = 3
 end
 
 function Game:acceleration ( pos,dt )
@@ -75,14 +78,14 @@ end
 function Entity:checkFirstCollision(colliderTree)
    -- return id of collided object (first one found) in supplied table of entities
    -- return nil if no collision found
-   local collisions = bsp.withinDisk ( colliderTree, self.pos, self.radius )
+   local collisions = bsp.withinDisk ( colliderTree, self.pos, self.radius+Game.theGame.npcRadius )
    if collisions then
       for k,entpos in pairs(collisions) do
-	 if entpos ~= self.pos then
+	 ent = Game.theGame.npcs[entpos.id]
+	 if entpos ~= self.pos and ent then
 	    local d = entpos - self.pos
-	    if d:len() < (Game.theGame.npcRadius + self.radius) then
-	       -- print("hit it", 100,50)
-	       return k
+	    if d:len() < (ent.radius + self.radius) then
+	       return entpos.id
 	    end
 	 end
       end
@@ -202,7 +205,7 @@ Idle = NPC:addState('Idle')
 function Idle:enteredState()
    self.radius = Game.theGame.npcRadius
    self.startTime = love.timer.getTime()
-   self.timeout = 15
+   self.timeout = Game.theGame.npcTimeSpentStopped + math.random() * Game.theGame.npcTimeSpentStoppedJitter
 --   self.sound = love.audio.newSource("bing.wav", "static") 
 --   love.audio.play(self.sound)
    self.vel = vector(0,0)
@@ -224,7 +227,7 @@ Moving = NPC:addState('Moving')
 function Moving:enteredState()
    self.radius = 8
    self.startTime = love.timer.getTime()
-   self.revertTime = 10
+   self.revertTime = Game.theGame.npcTimeSpentMoving
 --   self.sound = love.audio.newSource("upsy.wav", "static") 
 --   love.audio.play(self.sound)
 end
@@ -299,35 +302,38 @@ end
 
 
 function love.update(dt)
-   -- build bsp trees
+   
    function buildFromPos(t)
       local pts={}
       for i,b in pairs(t) do
-	 if b then table.insert(pts,b.pos) end
+	 if b then 
+	    b.pos.id = i  -- attach the array index (ent or bullet id)
+	    table.insert(pts,b.pos) 
+	 end
       end
-      print('building bsp tree with', #pts, 'points')
+      --print('building bsp tree with', #pts, 'points')
       return bsp.build(pts)
    end
-
-   Game.theGame.bulletTree = buildFromPos(Game.theGame.bullets)
-   Game.theGame.npcTree = buildFromPos(Game.theGame.npcs)
-
+    -- build bsp trees for bullets
+    Game.theGame.bulletTree = buildFromPos(Game.theGame.bullets)
 
    -- update the ents
    for i,ent in pairs(Entity.ents) do
       ent:update(dt)
    end
-
+  -- build bsp tree for updated ents
+  Game.theGame.npcTree = buildFromPos(Game.theGame.npcs)
+  
    -- collide bullets with npcs
    for i,bullet in pairs(Game.theGame.bullets) do
 --      local hit = bullet:checkFirstCollision(Game.theGame.npcs)
       local hit = bullet:checkFirstCollision(Game.theGame.npcTree)
-      if hit then
-	 if Game.theGame.npcs[hit]:damage() then
-	    Game.theGame.npcs[hit] = nil
-	 end
-	 -- delete bullet
-	 Game.theGame.bullets[i] = nil 
+      if hit and Game.theGame.npcs[hit] then
+        if Game.theGame.npcs[hit]:damage() then
+          Game.theGame.npcs[hit] = nil
+        end
+        -- delete bullet
+        Game.theGame.bullets[i] = nil 
       end
    end
 

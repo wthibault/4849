@@ -75,13 +75,13 @@ function BSP.withinDisk ( bsp, pt, r, axis )
    local nextAxis=axis=='x' and 'y' or 'x'
    if bsp then
       if bsp.splitter[axis] < pt[axis] - r then
-	 found = BSP.withinDisk ( bsp.right, pt, r, nextAxis )
+        found = BSP.withinDisk ( bsp.right, pt, r, nextAxis )
       elseif bsp.splitter[axis] > pt[axis] + r then
-	 found = BSP.withinDisk ( bsp.left, pt, r, nextAxis )
+        found = BSP.withinDisk ( bsp.left, pt, r, nextAxis )
       else
-	 found = BSP.concat ( BSP.concat ( BSP.withinDisk ( bsp.left, pt, r, nextAxis ),
-					   BSP.withinDisk ( bsp.right, pt, r, nextAxis ) ),
-			      BSP.inCircle ( pt, r, bsp.inplane ) )
+        found = BSP.concat ( BSP.concat ( BSP.withinDisk ( bsp.left, pt, r, nextAxis ),
+                                          BSP.withinDisk ( bsp.right, pt, r, nextAxis ) ),
+                              BSP.inCircle ( pt, r, bsp.inplane ) )
       end
    end
    return found
