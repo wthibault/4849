@@ -1,0 +1,119 @@
+
+bsp-test.lua,82
+function makeRandomPoints 5,68
+function findWithin 15,253
+function test(25,420
+
+bsp.lua,117
+function BSP.build 7,87
+function BSP.concat 43,899
+function BSP.inCircle 59,1239
+function BSP.withinDisk 71,1470
+
+bsp2d.lua,120
+function _splitSeg 19,434
+function BSP.build 63,1316
+function _printSeg 134,2895
+function BSP.segIntersect 153,3349
+
+main.lua,896
+function Game:initialize(17,297
+function Game:acceleration 34,731
+function Entity:initialize(46,992
+function Entity:update(55,1334
+function Entity:checkFirstCollisionBruteForce(64,1651
+function Entity:checkFirstCollision(78,2065
+function Bullet:initialize 98,2708
+function Bullet:update(103,2891
+function Bullet:draw(106,2948
+function NPC:initialize 117,3215
+function NPC:update(123,3404
+function NPC:draw(125,3432
+function NPC:damage(129,3595
+function NPC:Avoid(139,3786
+function NPC:AvoidBruteForce(171,4492
+function Idle:enteredState(205,5567
+function Idle:update(213,5910
+function Idle:exitedState(218,6064
+function Moving:enteredState(227,6461
+function Moving:update(234,6704
+function Moving:draw(247,7174
+function Moving:exitedState(252,7333
+function love.load(259,7444
+function love.mousepressed(283,8201
+function love.draw(288,8298
+function love.update(307,8754
+
+middleclass.lua,709
+local function _setClassDictionariesMetatables(10,1243
+local function _setClassMetatable(24,1676
+local function _createClass(33,1946
+local function _createLookupMetamethod(44,2251
+local function _setClassMetamethods(52,2505
+local function _setDefaultInitializeMethod(58,2651
+local function _includeMixin(64,2807
+function Object.static:allocate(83,3468
+function Object.static:new(88,3670
+function Object.static:subclass(94,3787
+function Object.static:subclassed(107,4221
+function Object.static:include(109,4267
+function Object:initialize(115,4493
+function Object:__tostring(117,4527
+function class(119,4607
+function instanceOf(124,4706
+function subclassOf(130,4928
+function includes(135,5128
+
+stateful.lua,998
+local function _addStatesToClass(27,1510
+local function _getStatefulMethod(34,1691
+local function _getNewInstanceIndex(44,1959
+local function _getNewAllocateMethod(51,2267
+local function _modifyInstanceIndex(59,2466
+local function _getNewSubclassMethod(63,2598
+local function _modifySubclassMethod(72,2839
+local function _modifyAllocateMethod(76,2959
+local function _assertType(80,3079
+local function _assertInexistingState(84,3315
+local function _assertExistingState(88,3495
+local function _invokeCallback(92,3652
+local function _getCurrentState(96,3761
+local function _getStateFromClassByName(100,3851
+local function _getStateIndexFromStackByName(106,4027
+local function _getStateName(115,4322
+function Stateful:included(121,4475
+function Stateful.static:addState(128,4633
+function Stateful:gotoState(136,4941
+function Stateful:pushState(152,5339
+function Stateful:popState(163,5680
+function Stateful:popAllStates(180,6131
+function Stateful:getStateStackDebugInfo(185,6241
+
+vector.lua,828
+local function new(33,1413
+local function isvector(39,1513
+function vector:clone(43,1579
+function vector:unpack(47,1636
+function vector:__tostring(51,1689
+function vector.__unm(55,1781
+function vector.__add(59,1835
+function vector.__sub(64,1983
+function vector.__mul(69,2131
+function vector.__div(80,2416
+function vector.__eq(85,2578
+function vector.__lt(89,2643
+function vector.__le(93,2722
+function vector.permul(97,2787
+function vector:len2(102,2939
+function vector:len(106,3009
+function vector.dist(110,3084
+function vector:normalize_inplace(117,3279
+function vector:normalized(123,3396
+function vector:rotate_inplace(127,3456
+function vector:rotated(133,3610
+function vector:perpendicular(138,3739
+function vector:projectOn(142,3805
+function vector:mirrorOn(149,4045
+function vector:cross(156,4308
+
+test-bsp2d.lua,0
