@@ -1,7 +1,7 @@
 bsp = require 'bsp2d'
 vector = require 'vector'
 
--- create a box around the origin, the test some rays at it.
+-- create a box , the test some rays at it.
 --
 
 p = { vector.new(0,0),
@@ -16,12 +16,9 @@ segs = { {p[1],p[2]},
 
 tree = bsp.build(segs)
 
-ray = { vector.new(-5,5), vector.new(1000,5) }
-
-intersection = bsp.segIntersect ( ray, tree )
-
-
 print ("Test 1: ")
+ray = { vector.new(-5,5), vector.new(1000,5) }
+intersection = bsp.segIntersect ( ray, tree )
 if intersection and intersection.x == 0 and intersection.y == 5 then
    print ("PASS")
 else

@@ -131,35 +131,47 @@ end
 
 
 -- helper
-function _printSeg (seg)
+function _printSeg (seg,indent)
+   indent = indent or 0
+   local pad = ''
+   for i = 1,indent do
+      pad = pad .. ' '
+   end
    if seg then
       if (seg[1] and seg[2]) then
-	 print(seg[1], seg[2])
+	 print(pad,seg[1], seg[2])
       end
       if (seg[1] and not seg[2]) then
-	 print(seg[1], 'nil')
+	 print(pad,seg[1], 'nil')
       end
       if (seg[2] and not seg[1]) then
-	 print('nil', seg[1])
+	 print(pad,'nil', seg[1])
       end
    else
-      print ('nil seg')
+      print (pad,'nil seg')
    end
 end
 
 -- line segment intersect bsp (tail should be in an "out" region,
 -- returns a vector point for the closest intersection with bsp along seg (a pair of points)
 
-function BSP.segIntersect ( seg, bsp )
+function BSP.segIntersect ( seg, bsp, indent )
    local near,far
    local nearestInt = nil
-   local fronSeg, backSeg
+   local frontSeg, backSeg
+   local indent = indent or 0
+   indent = indent + 2
+   local pad = ''
+   for i=1,indent do pad = pad .. ' ' end
 
---   print ('entered segIntersect: seg=',seg[1], seg[2])
+   print ('entered segIntersect: ')
+   _printSeg(seg, indent-2)
 
    if bsp == BSP.IN then
+      print (pad,'IN: returning ', seg[1])
       return seg[1]
    elseif bsp == BSP.OUT then
+      print (pad,'out: returning nil')
       return nil
    end
 
@@ -178,31 +190,37 @@ function BSP.segIntersect ( seg, bsp )
       farSeg = backSeg
    end
 
-   print('after split, ', _printSeg(nearSeg), _printSeg(farSeg))
+   print(pad,'after split: ')
+   _printSeg(nearSeg,indent)
+   _printSeg(farSeg,indent)
 
    if near then
-      print ('checcing nearseg' , _printSeg(nearSeg) )
-      nearestInt = BSP.segIntersect ( nearSeg, near )
+      print (pad, 'checking nearseg ' )
+      _printSeg(nearSeg,indent)
+
+      nearestInt = BSP.segIntersect ( nearSeg, near, indent )
       if nearestInt then
+	 print (pad,'near side intersection: ', nearestInt)
 	 return nearestInt
       end
-   else
---      print ('checcing inplane', _printSeg(seg) )
---      nearestInt = _segIntersect ( seg, bsp.inplane )
---      if nearestInt then
---	 return nearestInt
---      end
-      if far then
-	 print('checking farseg', _printSeg(farSeg) )
-	 nearestInt = BSP.segIntersect ( farSeg, far )
-	 if nearestInt then
-	    return nearestInt
-	 else
-	    return nil
-	 end
+   end
+
+   if far then
+      
+      print(pad, 'checking farseg')
+      _printSeg(farSeg,indent)
+      
+      nearestInt = BSP.segIntersect ( farSeg, far, indent )
+      if nearestInt then
+	 print (pad,'far side intersection: ', nearestInt)
+	 return nearestInt
       else
+	 print (pad,'no far side intersection, returning nil')
 	 return nil
       end
+   else
+      print (pad,'no far side intersection either, returning nil')
+      return nil
    end
 end
 
