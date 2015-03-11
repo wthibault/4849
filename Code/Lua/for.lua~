@@ -1,5 +1,0 @@
-a={'dog','cat',5, {1,2,3}, 'socks'}
-
-for i,v in ipairs(a) do
-   print (i, v)
-end
