@@ -32,7 +32,7 @@ end
 
 	 
 function love.load()
-    len = 2
+    len = 1
     rate = 44100
     bits = 16
     channel = 1
@@ -42,7 +42,7 @@ function love.load()
     osc = Oscillator(440)
     amplitude = 0.2
 
-    for i=1,len*rate do
+    for i=0,len*rate-1 do
         sample = osc() * amplitude
         soundData:setSample(i, sample)
     end
@@ -52,11 +52,15 @@ function love.load()
 
 
     string = KarplusStrong ( 880, rate )
-    for i=1,len*rate do
+    for i=0,len*rate-1 do
         sample = string() -- * amplitude
         soundData:setSample(i, sample)
     end
 
     source = love.audio.newSource(soundData)
     love.audio.play(source)
+end
+
+function love.keypressed ( key, isrepeat )
+   love.audio.play(source)
 end

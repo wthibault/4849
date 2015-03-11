@@ -51,7 +51,7 @@ function love.draw()
     for x = 1, tiles.width do
       screenX = (x-1)*tiles.size
       screenY = (y-1)*tiles.size
-      love.graphics.drawq ( image, quads[tiles:getTile(x,y)], screenX, screenY )
+      love.graphics.draw ( image, quads[tiles:getTile(x,y)], screenX, screenY )
     end
   end
 end

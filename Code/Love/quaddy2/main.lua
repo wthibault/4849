@@ -55,7 +55,7 @@ function love.draw()
   for y = 1, tiles.height do
     for x = 1, tiles.width do
       screenX, screenY = tiles:mapToScreen ( x, y )
-      love.graphics.drawq ( image, quads[tiles:getTile(x,y)], screenX, screenY )
+      love.graphics.draw ( image, quads[tiles:getTile(x,y)], screenX, screenY )
     end
   end
   love.graphics.print(gkey,300,400)

@@ -28,7 +28,7 @@ end
 
 
 function love.draw()
-   love.graphics.setColorMode("replace")
+--   love.graphics.setColorMode("replace")
 
    for i = 1,#entities do
       if entities[i].id then

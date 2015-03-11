@@ -49,7 +49,7 @@ function love.mousepressed( x, y, button )
 end
 
 function love.draw()
-   love.graphics.setColorMode("replace")
+--   love.graphics.setColorMode("replace")
    love.graphics.setColor(0,0,0)
 
    for i = 1,#entities do

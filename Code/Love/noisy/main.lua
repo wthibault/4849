@@ -31,7 +31,7 @@ function love.mousepressed( x, y, button )
 end
 
 function love.draw()
-   love.graphics.setColorMode("replace")
+--   love.graphics.setColorMode("replace")
    love.graphics.draw(listener.listenerImage, 
 		      listener.x, listener.y, 
 		      math.rad(listener.angle), 
