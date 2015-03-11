@@ -206,8 +206,8 @@ function Idle:enteredState()
    self.radius = Game.theGame.npcRadius
    self.startTime = love.timer.getTime()
    self.timeout = Game.theGame.npcTimeSpentStopped + math.random() * Game.theGame.npcTimeSpentStoppedJitter
---   self.sound = love.audio.newSource("bing.wav", "static") 
---   love.audio.play(self.sound)
+   self.sound = love.audio.newSource("click.wav", "static") 
+   love.audio.play(self.sound)
    self.vel = vector(0,0)
 end
 function Idle:update(dt)
@@ -216,7 +216,7 @@ function Idle:update(dt)
    end
 end
 function Idle:exitedState()
---   love.audio.stop(self.sound)
+   love.audio.stop(self.sound)
 end
 
 -- The Moving state changes its radius and starts a timer to revert to Idle in 10 seconds
@@ -228,8 +228,8 @@ function Moving:enteredState()
    self.radius = 8
    self.startTime = love.timer.getTime()
    self.revertTime = Game.theGame.npcTimeSpentMoving
---   self.sound = love.audio.newSource("upsy.wav", "static") 
---   love.audio.play(self.sound)
+   self.sound = love.audio.newSource("bing.wav", "static") 
+   love.audio.play(self.sound)
 end
 function Moving:update(dt)
    elapsedTime = love.timer.getTime() - self.startTime -- time since we entered the state
@@ -251,7 +251,7 @@ function Moving:draw()
    love.graphics.line ( self.pos.x, self.pos.y, ahead.x, ahead.y )
 end
 function Moving:exitedState()
---   love.audio.stop(self.sound)
+   love.audio.stop(self.sound)
 end
 
 ----------------------------------------
