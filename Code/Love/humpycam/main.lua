@@ -188,7 +188,7 @@ function drawTile( row, col )
    love.graphics.rectangle ( 'fill', x, y, tiles.size, tiles.size )
    ]]--
    
-   love.graphics.drawq ( atlas, quads[tiles[i]], x, y )
+   love.graphics.draw ( atlas, quads[tiles[i]], x, y )
 end
 
 function drawNPCs()

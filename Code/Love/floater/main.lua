@@ -118,7 +118,6 @@ end
 
 
 function love.draw()
-   love.graphics.setColorMode('replace')
    love.graphics.setBlendMode('alpha')
 --   for i,ent in ipairs(Entity.ents) do
 --      ent:draw()

@@ -209,8 +209,10 @@ end
 
 
 function love.draw()
-   love.graphics.setColorMode('replace')
+   --love.graphics.setColorMode('replace')
+   --love.graphics.setBlendMode('alpha')
    love.graphics.setBlendMode('alpha')
+
 
    love.graphics.setColor ( 255,255,0,255 )
    love.graphics.circle ( 'fill', Game.theGame.sunPosition.x, Game.theGame.sunPosition.y, 10 )

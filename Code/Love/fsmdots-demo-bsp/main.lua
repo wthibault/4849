@@ -105,7 +105,7 @@ function Bullet:update(dt)
 end
 function Bullet:draw()
    love.graphics.setPointSize ( self.radius * 2 )
-   love.graphics.setColor ( 255,100,100,100 )
+   love.graphics.setColor ( 225,200,20,100 )
    love.graphics.point(self.pos.x, self.pos.y)
 end
    
@@ -235,6 +235,7 @@ function Moving:update(dt)
    elapsedTime = love.timer.getTime() - self.startTime -- time since we entered the state
    self.radius =  4+4 *math.abs(math.sin(9*math.pi * elapsedTime)) -- 9Hz flutter
    local steeringForce = self:Avoid ( Game.theGame.bullets )
+   --local steeringForce = self:AvoidBruteForce ( Game.theGame.bullets )
    if steeringForce then
       self.vel = self.vel + steeringForce * dt
    end
@@ -283,7 +284,7 @@ end
 
 
 function love.draw()
-   love.graphics.setColorMode('replace')
+   --love.graphics.setColorMode('replace')
    love.graphics.setBlendMode('alpha')
 
    love.graphics.setColor ( 255,255,0,255 )

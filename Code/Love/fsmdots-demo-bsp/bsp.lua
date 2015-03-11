@@ -1,4 +1,5 @@
 -- a bsp tree for points with circular range queries
+-- better described as a k-d tree, using points as splitters, and alternating axes.
 
 local BSP = {}
 BSP.__index=BSP
@@ -44,7 +45,7 @@ function BSP.concat ( t1, t2 )
    -- add the integer-indexed elements of t2 to the end of t1
    if t1 and t2 then
       for _,vec in pairs(t2) do
-	 table.insert ( t1, vec )
+	     table.insert ( t1, vec )
       end
       return t1
    elseif t1==nil and t2 ~= nil then
