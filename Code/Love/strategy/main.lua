@@ -30,12 +30,12 @@ end
 function love.draw()
 --   love.graphics.setColorMode("replace")
 
-   for i = 1,#entities do
-      if entities[i].id then
-	 entities[i]:draw()
-      end
-      love.graphics.print(tostring(i), 400, 200 )
-   end
+for i = 1,#entities do
+   if entities[i].id then
+    entities[i]:draw()
+ end
+ love.graphics.print(tostring(i), 400, 200 )
+end
 
 end
 
@@ -43,14 +43,14 @@ function checkForCollision ( ent )
    -- return id of collided object (first found)
    for i = 1,#entities do
       if i ~= ent.id and entities[i].id then
-	 d = entitites[i].pos - ent.pos
-	 if d:len() < COLLISION_DISTANCE then
-	    print("hit it", 100,50)
-	    return i
-	 end
-      end
-   end
-   return nil
+       d = entitites[i].pos - ent.pos
+       if d:len() < COLLISION_DISTANCE then
+          print("hit it", 100,50)
+          return i
+       end
+    end
+ end
+ return nil
 end
 
 
@@ -63,27 +63,27 @@ function createNewBullet ( pos, vel )
    print("new bullet at ", pos.x, pos.y, vel.x, vel.y)
 
    bullet.update = function (dt) 
-      if bullet.updateStrategy then
-	 bullet.updateStrategy(bullet,dt)
-      else
-	 bullet.pos = bullet.pos + bullet.vel * dt
-      end
-      
-      local hit = checkForCollision ( bullet )
-      if hit then
+   if bullet.updateStrategy then
+    bullet.updateStrategy(bullet,dt)
+ else
+    bullet.pos = bullet.pos + bullet.vel * dt
+ end
+ 
+ local hit = checkForCollision ( bullet )
+ if hit then
 	 -- delete self from entities, explosion 
 	 bullet.id = nil
 	 -- damage the hit target
 	 print("pow", bullet.pos )
-      end
+   end
       -- also check for off-screen...
    end
 
    bullet.draw = function ()
-      love.graphics.draw(bulletImage, bullet.pos.x, bullet.pos.y)
-   end
+   love.graphics.draw(bulletImage, bullet.pos.x, bullet.pos.y)
+end
 
-   return bullet
+return bullet
 end
 
 function createNewShip ( pos, vel )
@@ -95,29 +95,29 @@ function createNewShip ( pos, vel )
    entities[#entities+1] = ship
 
    ship.update = function (dt)
-      if ship.updateStrategy then
-	 ship.updateStrategy(ship,dt)
-      else
-	 ship.pos = ship.pos + ship.vel * dt
-	 ship.angle = ship.angle + 0.2
-      end
-      
-      local hit = checkForCollision ( ship )
-      if hit then
+   if ship.updateStrategy then
+    ship.updateStrategy(ship,dt)
+ else
+    ship.pos = ship.pos + ship.vel * dt
+    ship.angle = ship.angle + 0.2
+ end
+ 
+ local hit = checkForCollision ( ship )
+ if hit then
 	 -- delete self from entities, explosion 
 	 ship.id = nil
 	 print("pow", 320,240)
-      end
+   end
       -- also check for off-screen...
    end
 
    ship.draw = function ()
-      love.graphics.draw(shipImage, ship.pos.x, ship.pos.y, 
-			 ship.angle,1,1,
-			 shipImage:getWidth()/2,shipImage:getHeight()/2)
-   end
+   love.graphics.draw(shipImage, ship.pos.x, ship.pos.y, 
+     ship.angle,1,1,
+     shipImage:getWidth()/2,shipImage:getHeight()/2)
+end
 
-   return ship
+return ship
 end
 
 function love.update(dt)
