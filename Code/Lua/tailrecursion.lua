@@ -8,7 +8,9 @@ end
 
 function fact (n)
    if n > 0 then
-      return fact(n-1)
+      return n*fact(n-1)
+   else
+      return 1
    end
 end
 

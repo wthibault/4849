@@ -1,7 +1,7 @@
 function love.load()
    player={}
-   player.vx = 10
-   player.vy = -30
+   player.vx = 15.2
+   player.vy = -33.3
    player.x = 320
    player.y = 240
    image = love.graphics.newImage("masonic-eye.jpg")
@@ -13,8 +13,8 @@ function love.update(dt)
 end
 
 function love.draw()
-   love.graphics.print( tostring(player.x), 300,200 )
-   love.graphics.print( tostring(player.y), 300,220 )
+   love.graphics.print( string.format("%.2d",player.x), 300,200 )
+   love.graphics.print( string.format("%.2d",player.y), 300,220 )
    love.graphics.draw ( image, player.x, player.y)
 end
 
