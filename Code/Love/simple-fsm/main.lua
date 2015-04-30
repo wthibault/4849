@@ -15,12 +15,14 @@
 
 	To change an FSM's state, call the FSM object's changeState() method, passing in the new state.
 
-	On each frame, if the per-frame execute() method is used, call the FSM's update() method
-	which will call the current state's "execute" method () after checking if the function exists).
+	From love.update(), call the FSM's update() method
+	which will call the current state's "execute" method () after checking if the function exists.
 
 	In this example, the "happyState" changes the object's color for a certain duration,
 	then changes to the "sadState", which transitions back to "happyState" when the user clicks on it.
 
+	Points are awarded based on the "happiness" value of the entity when it was clicked.
+	Clicking on a sad entity gives one point, clicking on a happy entity can give as much as 100 points.
 
 	
 ]]
@@ -114,6 +116,7 @@ function love.draw ()
 	for k,ent in pairs(entities) do
 		ent:draw()
 	end
+	love.graphics.setColor(255,255,255)
 	love.graphics.print ( string.format("%10d", score), 20,20 )
 end
 
