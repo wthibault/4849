@@ -281,7 +281,7 @@ function Moving:update(dt)
    local flockAvoid = self:Avoid ( Game.theGame.npcTree ) or vector.new(0,0)
    local flockMatchVel = self:MatchVel() or vector.new(0,0)
    local randomImpulse = vector(math.random()*0.1,math.random()*0.1)
-   steeringForce = 2*bulletForce + 0.3*flockAvoid + 0.1*flockMatchVel + randomImpulse
+   steeringForce = 0.5*bulletForce + 0.3*flockAvoid + 0.1*flockMatchVel + randomImpulse
 
    if steeringForce then
       self.vel = self.vel + steeringForce * dt
