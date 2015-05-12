@@ -3,7 +3,7 @@ require 'middleclass'
 Stateful = require "stateful"
 bsp = require "bsp"
 
-numNPCs = 500
+numNPCs = 5
 
 
 -- This example shows using 'middleclass' objects and 'stateful.lua' to 
@@ -42,7 +42,9 @@ end
 -------------------------------
 
 Entity = class('Entity')
+
 Entity.static.ents = {}
+
 function Entity:initialize(pos0,vel0)
    self.pos = vector(pos0.x, pos0.y)
    self.vel = vector(vel0.x, vel0.y)
@@ -52,6 +54,7 @@ function Entity:initialize(pos0,vel0)
    Entity.ents[#(Entity.ents)+1] = self
    
 end
+
 function Entity:update(dt)
    -- default update uses gravity acceleration to sun
    self.vel = self.vel + Game.theGame:acceleration ( self.pos, dt )
@@ -75,6 +78,7 @@ function Entity:checkFirstCollisionBruteForce(colliders)
    end
    return nil
 end
+
 function Entity:checkFirstCollision(colliderTree)
    -- return id of collided object (first one found) in supplied table of entities
    -- return nil if no collision found
@@ -138,7 +142,7 @@ end
 -- steering - avoid 
 function NPC:Avoid(them)
    -- find the closest one and avoid it
-   -- return a vector for forace
+   -- return a vector for force
    -- uses bsp tree
    local forceConstant = 5
    local minDist = 100
@@ -230,7 +234,9 @@ end
 
 -- The Idle state draws itself as a large stationary disk.
 -- If it gets hit, or too much time elapses, it changes state to Moving
+
 Idle = NPC:addState('Idle')
+
 function Idle:enteredState()
    self.radius = Game.theGame.npcRadius
    self.startTime = love.timer.getTime()
@@ -239,11 +245,13 @@ function Idle:enteredState()
    --love.audio.play(self.sound)
    self.vel = vector(0,0)
 end
+
 function Idle:update(dt)
    if self.health < 100 or (love.timer.getTime() - self.startTime) > self.timeout then
       self:gotoState('Moving')
    end
 end
+
 function Idle:exitedState()
    --love.audio.stop(self.sound)
 end
@@ -252,7 +260,9 @@ end
 -- Moving also overrides the draw method by changing the radius,  
 -- calling the old "owner's" draw method and then drawing a 'tail'
 -- we also apply a steering force to our velocity before the entity update
+
 Moving = NPC:addState('Moving')
+
 function Moving:enteredState()
    self.radius = 8
    self.startTime = love.timer.getTime()
@@ -260,15 +270,19 @@ function Moving:enteredState()
    --self.sound = love.audio.newSource("bing.wav", "static") 
    --love.audio.play(self.sound)
 end
+
 function Moving:update(dt)
+
    elapsedTime = love.timer.getTime() - self.startTime -- time since we entered the state
    self.radius =  4+4 *math.abs(math.sin(9*math.pi * elapsedTime)) -- 9Hz flutter
+
    local steeringForce = vector.new(0,0)
    local bulletForce = self:Avoid ( Game.theGame.bulletTree ) or vector.new(0,0)
    local flockAvoid = self:Avoid ( Game.theGame.npcTree ) or vector.new(0,0)
    local flockMatchVel = self:MatchVel() or vector.new(0,0)
    local randomImpulse = vector(math.random()*0.1,math.random()*0.1)
    steeringForce = 2*bulletForce + 0.3*flockAvoid + 0.1*flockMatchVel + randomImpulse
+
    if steeringForce then
       self.vel = self.vel + steeringForce * dt
    end
@@ -278,11 +292,13 @@ function Moving:update(dt)
       self:gotoState('Idle')
    end
 end
+
 function Moving:draw()
    NPC.draw ( self )
    local ahead = self.pos - self.vel * 0.15
    love.graphics.line ( self.pos.x, self.pos.y, ahead.x, ahead.y )
 end
+
 function Moving:exitedState()
    --love.audio.stop(self.sound)
 end
@@ -293,15 +309,15 @@ end
 function love.load()
    if arg[#arg] == "-debug" then require("mobdebug").start() end 
    Game.theGame = Game:new()
---   love.graphics.setBackgroundColor(54, 172, 248,255)
+
    love.graphics.setBackgroundColor(0,0,0,255)
    local w = love.graphics.getWidth()
    local h = love.graphics.getHeight()
---   love.graphics.setMode(w,h,true)
    for i=1,numNPCs do
       local target = NPC:new ( vector(w/2,i * h/numNPCs) , vector(100,0) )
       target:gotoState('Idle')
    end
+
    -- for demo, start with a bullet or more
    math.randomseed(os.time())
    xSpacing = math.random() * 20.0
@@ -317,15 +333,11 @@ end
 
 
 function love.draw()
-   --love.graphics.setColorMode('replace')
    love.graphics.setBlendMode('alpha')
 
    love.graphics.setColor ( 255,255,0,255 )
    love.graphics.circle ( 'fill', Game.theGame.sunPosition.x, Game.theGame.sunPosition.y, 10 )
 
---   for i,ent in ipairs(Entity.ents) do
---      ent:draw()
---   end
    for i,ent in pairs(Game.theGame.npcs) do
       ent:draw()
    end
@@ -348,24 +360,31 @@ function love.update(dt)
       --print('building bsp tree with', #pts, 'points')
       return bsp.build(pts)
    end
-    -- build bsp trees for bullets
-    Game.theGame.bulletTree = buildFromPos(Game.theGame.bullets)
+
+   -- build bsp trees for bullets
+   Game.theGame.bulletTree = buildFromPos(Game.theGame.bullets)
 
    -- update the ents
    for i,ent in pairs(Entity.ents) do
       ent:update(dt)
    end
-  -- build bsp tree for updated ents
-  Game.theGame.npcTree = buildFromPos(Game.theGame.npcs)
+   -- build bsp tree for updated ents
+   Game.theGame.npcTree = buildFromPos(Game.theGame.npcs)
   
    -- collide bullets with npcs
    for i,bullet in pairs(Game.theGame.bullets) do
---      local hit = bullet:checkFirstCollision(Game.theGame.npcs)
+
+      -- slow
+      --      local hit = bullet:checkFirstCollisionBruteForce(Game.theGame.npcs)
+      -- faster
       local hit = bullet:checkFirstCollision(Game.theGame.npcTree)
+
       if hit and Game.theGame.npcs[hit] then
+
         if Game.theGame.npcs[hit]:damage() then
           Game.theGame.npcs[hit] = nil
         end
+
         -- delete bullet
         Game.theGame.bullets[i] = nil 
       end
