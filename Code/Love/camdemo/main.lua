@@ -8,7 +8,7 @@ config = require 'config'
 function love.load()
 
 	level={}
-	level.maxX = 10000
+	level.maxX = 20000
 	level.maxY = love.window.getHeight()/2
 	level.obstacles = {}
 	for i=1,100 do
@@ -17,15 +17,23 @@ function love.load()
 	end
 
 	cam = camera.new()
+
+	bgcam = camera.new()
+	bgcam.zoom = config.bgzoom
+	bgcam2 = camera.new()
+	bgcam2.zoom = 0.9 * config.bgzoom
+
 	player = {accel=config.gravityAccel, 
 				pos=vector(love.window.getWidth()/2,level.maxY-100),
-			    vel = vector(0,0)}
+			    vel = vector(0,0),
+				radius = 20}
 	
 
 end
 
 
 function love.update(dt)
+
 	player.vel = player.vel + player.accel + config.gravityAccel
 	player.pos = player.pos + player.vel
 	player.vel = player.vel * 0.99
@@ -39,6 +47,28 @@ function love.update(dt)
 	-- follow player with camera
 	cam.pos.x = player.pos.x
 
+	-- background too
+	bgcam.pos.x = player.pos.x
+	bgcam2.pos.x = player.pos.x
+
+	local t = love.timer.getTime()
+	love.graphics.setBackgroundColor ( 	127 + 64 * (math.sin(t)+1),
+										127 + 64 * (math.sin(1.6*t)+1),
+										127 + 64 * (math.sin(3.14159*t)+1)) 
+
+end
+
+function drawBackground(seed)
+	-- draw background
+	love.math.setRandomSeed ( seed )
+	for i=1,300 do
+		love.graphics.setColor ( love.math.random(100,255),
+								love.math.random(100,255),
+								love.math.random(100,255))
+		love.graphics.circle ( "fill", love.math.random(-300,level.maxX),
+										love.math.random(-love.window.getHeight(),love.window.getHeight()*2),
+										200 )
+	end
 end
 
 function draw()
@@ -57,10 +87,14 @@ function draw()
 
 	-- draw player
 	love.graphics.setColor ( 0,255, 0 )
-	love.graphics.circle("fill", player.pos.x, player.pos.y, 15 )
+	love.graphics.circle("fill", player.pos.x, player.pos.y-player.radius, player.radius )
 end
 
 function love.draw()
+	-- draw the background with a zoomed camera
+	bgcam2:draw(function () drawBackground(57) end)
+	bgcam:draw(function () drawBackground(99) end)
+
 	-- draw the scene using the camera
 	cam:draw(draw)
 	
