@@ -9,7 +9,7 @@ function love.load()
 
 	level={}
 	level.maxX = 20000
-	level.maxY = love.window.getHeight()/2
+	level.maxY = love.graphics.getHeight()/2
 	level.obstacles = {}
 	for i=1,100 do
 		level.obstacles[i] = vector(love.math.random(0,level.maxX), level.maxY)
@@ -24,7 +24,7 @@ function love.load()
 	bgcam2.zoom = 0.9 * config.bgzoom
 
 	player = {accel=config.gravityAccel, 
-				pos=vector(love.window.getWidth()/2,level.maxY-100),
+				pos=vector(love.graphics.getWidth()/2,level.maxY-100),
 			    vel = vector(0,0),
 				radius = 20}
 	
@@ -66,7 +66,7 @@ function drawBackground(seed)
 								love.math.random(100,255),
 								love.math.random(100,255))
 		love.graphics.circle ( "fill", love.math.random(-300,level.maxX),
-										love.math.random(-love.window.getHeight(),love.window.getHeight()*2),
+										love.math.random(-love.graphics.getHeight(),love.graphics.getHeight()*2),
 										200 )
 	end
 end

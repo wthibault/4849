@@ -3,7 +3,7 @@ require 'middleclass'
 Stateful = require "stateful"
 bsp = require "bsp"
 
-numNPCs = 500
+numNPCs = 200
 
 
 -- This example shows using 'middleclass' objects and 'stateful.lua' to 
@@ -104,9 +104,10 @@ function Bullet:update(dt)
    Entity.update(self,dt)
 end
 function Bullet:draw()
-   love.graphics.setPointSize ( self.radius * 2 )
+--   love.graphics.setPointSize ( self.radius * 2 )
    love.graphics.setColor ( 225,200,20,100 )
-   love.graphics.point(self.pos.x, self.pos.y)
+--   love.graphics.point(self.pos.x, self.pos.y)
+   love.graphics.circle("fill", self.pos.x, self.pos.y, self.radius, 5)
 end
    
 ----------------------------------------

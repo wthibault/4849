@@ -16,7 +16,7 @@ function love.load()
 end
 
 function love.mousepressed( x, y, button )
-   local start = vector.new(love.window.getWidth()/2, love.window.getHeight())
+   local start = vector.new(love.graphics.getWidth()/2, love.graphics.getHeight())
    local speed = 1000
    local dir = vector.new(x,y) - start
    dir:normalize_inplace()
@@ -129,7 +129,7 @@ end
 
 function spawnTargets ( N )
    for i = 1,N do
-      local pos = vector.new ( love.math.random( 10, love.window.getWidth()-10), 
+      local pos = vector.new ( love.math.random( 10, love.graphics.getWidth()-10), 
                                -love.math.random(10,100) )
       local vel = vector.new ( 0,50 )
       createNewTarget ( pos, vel )

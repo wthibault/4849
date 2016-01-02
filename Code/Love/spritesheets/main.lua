@@ -14,8 +14,8 @@ end
 function love.load()
    xmin = config.margin
    ymin = config.margin
-   xmax = love.window.getWidth() - config.margin
-   ymax = love.window.getHeight() - config.margin
+   xmax = love.graphics.getWidth() - config.margin
+   ymax = love.graphics.getHeight() - config.margin
    
    explodeSpriteSheet = love.graphics.newImage(config.explodeSheetFilename)
    local g = anim8.newGrid(64,64, 
