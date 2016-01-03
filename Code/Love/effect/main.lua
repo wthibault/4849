@@ -3,35 +3,40 @@ vector = require 'vector'
 function love.load ()
    canvas = love.graphics.newCanvas()
 
+   local w, h
+   w,h = canvas:getDimensions()
+   print('new canvas @'.. w ..' '.. h)
+
    local vertices = {
       {
 	 -- top-left corner
-	 0,0, -- position of the vertex
-	 0, 0, -- texture coordinate at the vertex position
-	 255, 0, 0, -- color of the vertex
+	 0.0,0.0, -- position of the vertex
+	 0.0, 0.0, -- texture coordinate at the vertex position
+	 255.0, 0.0, 0.0, -- color of the vertex
       },
       {
 	 -- top-right corner (green-tinted)
-	 love.graphics.getWidth(), 0, 
-	 1, 0,               -- texture coordinates are in the range of [0, 1]
-	 0, 255, 0
+	 (love.graphics.getWidth()), 0.0, 
+	 1.0, 0.0,               -- texture coordinates are in the range of [0, 1]
+	 0.0, 255.0, 0.0
       },
       {
 	   -- bottom-right corner (blue-tinted)
-	 love.graphics.getWidth(), love.graphics.getHeight(),
-	 1, 1,
-	 0, 0, 255
+	 (love.graphics.getWidth()), (love.graphics.getHeight()),
+	 1.0, 1.0,
+	 0.0, 0.0, 255.0
       },
       {
 	 -- bottom-left corner (yellow-tinted)
-	 0, love.graphics.getHeight(),
-	 0, 1,
-	 255, 255, 0
+	 0.0, (love.graphics.getHeight()),
+	 0.0, 1.0,
+	 255.0, 255.0, 0.0
       },
     }
    
    -- the Mesh DrawMode "fan" works well for 4-vertex Meshes.
-   mesh = love.graphics.newMesh(vertices, canvas, "fan")
+--   mesh = love.graphics.newMesh(vertices, canvas, "fan")
+   mesh = love.graphics.newMesh(vertices) -- , "fan","static")
    
 
    local passthrucode = [[
@@ -82,9 +87,9 @@ local simple_blur = [[
         float offsets[3];
         float weights[3];
        
-        offsets[0] = -1 * incr;
+        offsets[0] = -1.0 * incr;
         offsets[1] = 0.0;
-        offsets[2] =  1 * incr;
+        offsets[2] =  1.0 * incr;
 
         weights[0] = -1.0;
         weights[1] = 2.0;
@@ -92,7 +97,7 @@ local simple_blur = [[
 
         vec4 outcolor = vec4(0.0, 0.0, 0.0, 0.0);
 
-        float sum = 0;
+        float sum = 0.0;
         for (int i = 0; i < 3; i++) {
           sum += weights[i];
           outcolor += weights[i] * Texel ( texture, 
@@ -149,10 +154,11 @@ end
 
 
 function love.draw ()
-   love.graphics.setCanvas ( canvas )
-     canvas:clear()
 
-     love.graphics.setColor(255,255,255)
+   love.graphics.setCanvas ( canvas )
+     love.graphics.clear()
+
+     love.graphics.setColor(0,255,255)
      for i=1,80 do
 	love.graphics.line (i*10,0, i*20,love.graphics.getHeight())
 	love.graphics.line (0,i*5, love.graphics.getWidth(), i*45)
@@ -173,6 +179,7 @@ function love.draw ()
    love.graphics.setCanvas()
 
    love.graphics.setShader(shaders[currentShader])
+   mesh:setTexture(canvas)
      love.graphics.draw(mesh)
    love.graphics.setShader()
 end
